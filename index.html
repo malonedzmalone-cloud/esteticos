@@ -63,12 +63,10 @@ h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p
   <section class="screen active" id="home">
     <div class="topbar">
       <div class="brand"><div class="logo">GC</div><div><strong>GlowCare</strong><span>Ficha & evolução estética</span></div></div>
-      <button class="icon-btn" data-toast>🔔</button>
     </div>
     <div class="hero">
       <span class="badge">✨ Prontuário visual mobile</span>
-      <h1>Organize clientes, fichas e resultados em um só lugar.</h1>
-      <p>Um protótipo feito para esteticistas acompanharem cada paciente com ficha em PDF e fotos de antes/depois.</p>
+      <h1>Acompanhe cada transformação com mais organização.</h1>
       <div class="actions">
         <button class="btn btn-primary" data-nav="clients">Ver clientes</button>
         <button class="btn btn-secondary" data-open="clientSheet">Cadastrar cliente</button>
@@ -78,11 +76,10 @@ h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p
 
   <section class="screen" id="clients">
     <div class="topbar">
-      <div class="brand"><div class="logo">GC</div><div><strong>Clientes</strong><span>Lista privada e objetiva</span></div></div>
-      <button class="icon-btn" data-open="clientSheet">＋</button>
+      <div class="brand"><div class="logo">GC</div><div><strong>Clientes</strong></div></div>
     </div>
-    <div class="section"><div><h2>Pacientes</h2><p>Na lista aparece apenas o nome. CPF e dados internos ficam protegidos.</p></div></div>
-    <div class="search"><span>🔎</span><input id="searchClient" placeholder="Buscar cliente pelo nome..." /></div>
+    <div class="section"><div><h2>Pacientes</h2><p>Digite o nome do cliente para buscar.</p></div></div>
+    <div class="search"><span>🔎</span><input id="searchClient" placeholder="Buscar cliente." /></div>
     <div class="list" id="clientList"></div>
   </section>
 
@@ -106,7 +103,7 @@ h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p
 
     <div class="tab-panel active" id="tabFicha">
       <div class="card">
-        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Ficha em PDF</h2><p>Anexe a ficha/anamnese da cliente em PDF.</p></div></div>
+        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Ficha em PDF</h2><p>Anexe a ficha/anamnese da cliente.</p></div></div>
         <label class="file-zone" for="pdfInput">
           <div class="big">📄</div><div><strong>Anexar documento PDF</strong><p>Toque aqui para selecionar a ficha da paciente.</p></div>
         </label>
@@ -114,7 +111,7 @@ h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p
         <div class="pdf-card" id="pdfCard"><div class="pdf-icon">PDF</div><div style="flex:1;min-width:0"><strong id="pdfName">ficha.pdf</strong><span>Documento salvo nesta cliente</span></div><button class="btn btn-small btn-secondary" id="openPdf">Abrir</button></div>
       </div>
       <div class="card" style="margin-top:12px">
-        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Resumo privado</h2><p>Dados cadastrados para controle interno.</p></div></div>
+        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Resumo</h2><p>Dados cadastrados para controle interno.</p></div></div>
         <div class="timeline">
           <div class="timeline-item"><div class="dot">🪪</div><div><strong>CPF</strong><span id="cpfText">Não informado</span></div></div>
           <div class="timeline-item"><div class="dot">💬</div><div><strong>WhatsApp</strong><span id="whatsText">Não informado</span></div></div>
@@ -152,7 +149,7 @@ h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p
 
 <div class="sheet" id="clientSheet">
   <div class="sheet-content">
-    <div class="sheet-head"><div><h3 id="sheetTitle">Cadastrar cliente</h3><p>Dados completos salvos; na lista principal aparece somente o nome.</p></div><button class="icon-btn" data-close="clientSheet">×</button></div>
+    <div class="sheet-head"><div><h3 id="sheetTitle">Cadastrar cliente</h3></div><button class="icon-btn" data-close="clientSheet">×</button></div>
     <div class="card">
       <div class="form">
         <div><label>Nome completo</label><input id="nameInput" placeholder="Ex: Ana Paula Souza"></div>
@@ -160,7 +157,6 @@ h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p
         <div><label>WhatsApp</label><input id="whatsInput" placeholder="(00) 00000-0000"></div>
         <div><label>Procedimento principal</label><select id="procedureInput"><option>Limpeza de pele</option><option>Drenagem linfática</option><option>Massagem modeladora</option><option>Peeling</option><option>Design de sobrancelhas</option><option>Outro</option></select></div>
         <div><label>Observações internas</label><textarea id="clientNotes" placeholder="Alergias, preferências, cuidados, restrições..."></textarea></div>
-        <div class="note">🔒 Privacidade visual: na lista aparece apenas o nome da cliente.</div>
         <button class="btn btn-primary" id="saveClient">Salvar cliente</button>
         <button class="btn btn-secondary" data-close="clientSheet">Cancelar</button>
       </div>
