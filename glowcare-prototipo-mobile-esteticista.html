@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>GlowCare — Protótipo Mobile</title>
+<style>
+:root{
+  --primary:#C026D3;--primary-dark:#86198F;--primary-soft:#FAE8FF;
+  --rose:#F43F5E;--rose-soft:#FFE4E6;--green:#10B981;--green-soft:#D1FAE5;
+  --bg:#FFF7FB;--card:#fff;--text:#231322;--muted:#7C6378;--border:#F3D8EA;
+  --shadow:0 18px 42px rgba(134,25,143,.12);--soft:0 10px 26px rgba(134,25,143,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(192,38,211,.16),transparent 32%),radial-gradient(circle at top right,rgba(244,63,94,.10),transparent 30%),var(--bg);color:var(--text)}
+button,input,textarea,select{font-family:inherit}button{border:0;cursor:pointer}
+input,textarea,select{width:100%;border:1px solid var(--border);background:#fff;color:var(--text);outline:none;border-radius:17px;min-height:54px;padding:0 16px;font-size:15px}
+textarea{min-height:110px;resize:vertical;padding-top:14px;line-height:1.45}
+input:focus,textarea:focus,select:focus{border-color:rgba(192,38,211,.55);box-shadow:0 0 0 4px rgba(192,38,211,.10)}
+label{display:block;font-size:13px;font-weight:850;margin-bottom:8px}
+.app{width:100%;min-height:100vh;max-width:470px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,247,251,.95));position:relative;overflow-x:hidden;box-shadow:0 0 0 1px rgba(243,216,234,.6)}
+.screen{display:none;min-height:100vh;padding:18px 18px 104px;animation:enter .25s ease}.screen.active{display:block}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:18px;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.55),transparent 25%),linear-gradient(135deg,var(--primary),var(--rose));color:#fff;display:grid;place-items:center;font-weight:950;font-size:19px;box-shadow:0 16px 26px rgba(192,38,211,.28)}
+.brand strong{display:block;font-size:18px;letter-spacing:-.045em}.brand span{display:block;margin-top:2px;font-size:12px;color:var(--muted);font-weight:750}
+.icon-btn{width:46px;height:46px;border-radius:17px;background:rgba(255,255,255,.88);border:1px solid var(--border);box-shadow:var(--soft);font-size:18px;display:grid;place-items:center;color:var(--text)}
+.hero{border-radius:34px;padding:24px;background:radial-gradient(circle at top right,rgba(192,38,211,.18),transparent 34%),linear-gradient(145deg,#fff,#FFF1F7);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.badge{min-height:34px;width:max-content;max-width:100%;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary-dark);font-size:12px;font-weight:900;border:1px solid rgba(192,38,211,.14)}
+h1{margin-top:16px;font-size:40px;line-height:.95;letter-spacing:-.075em}.hero p{margin-top:14px;color:var(--muted);line-height:1.52;font-size:15px}
+.btn{min-height:56px;padding:0 20px;border-radius:18px;font-size:15px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%}.btn:active{transform:scale(.98)}
+.btn-primary{color:#fff;background:linear-gradient(135deg,var(--primary),var(--rose));box-shadow:0 18px 28px rgba(192,38,211,.24)}
+.btn-secondary{color:var(--primary-dark);background:#fff;border:1px solid rgba(192,38,211,.18)}
+.btn-small{min-height:44px;border-radius:15px;font-size:13px;padding:0 14px;width:auto}
+.actions{display:grid;gap:11px;margin-top:20px}
+.panel{margin-top:18px;border-radius:28px;padding:18px;background:radial-gradient(circle at right,rgba(255,255,255,.28),transparent 38%),linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.panel:after{content:"";position:absolute;width:160px;height:160px;border-radius:999px;right:-54px;bottom:-70px;border:28px solid rgba(255,255,255,.13)}.panel small{color:rgba(255,255,255,.72);font-weight:850;position:relative;z-index:1}.panel strong{display:block;margin-top:8px;font-size:22px;letter-spacing:-.045em;position:relative;z-index:1}
+.section{margin:18px 0 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.section h2{font-size:28px;line-height:1;letter-spacing:-.065em}.section p{margin-top:7px;color:var(--muted);font-size:14px;line-height:1.35}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.stat{min-height:120px;border-radius:24px;background:rgba(255,255,255,.9);border:1px solid var(--border);box-shadow:var(--soft);padding:16px;display:flex;flex-direction:column;justify-content:space-between}.stat .ico{width:42px;height:42px;display:grid;place-items:center;border-radius:16px;background:var(--primary-soft);color:var(--primary);font-size:19px}.stat small{color:var(--muted);font-size:12px;font-weight:850}.stat strong{display:block;margin-top:4px;font-size:26px;letter-spacing:-.07em}
+.search{margin:14px 0;position:relative}.search input{padding-left:44px;box-shadow:var(--soft)}.search span{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:18px}
+.list,.results,.grid{display:grid;gap:12px}.client{width:100%;min-height:86px;border-radius:24px;background:rgba(255,255,255,.94);border:1px solid var(--border);box-shadow:var(--soft);padding:14px;display:flex;align-items:center;gap:13px;text-align:left}
+.avatar{width:54px;height:54px;border-radius:20px;display:grid;place-items:center;color:#fff;font-size:19px;font-weight:950;background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.5),transparent 26%),linear-gradient(135deg,var(--primary),var(--rose))}
+.client-main{min-width:0;flex:1}.client-main strong{display:block;font-size:16px;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.client-main span{display:block;color:var(--muted);font-size:12px;font-weight:750;margin-top:4px}.pill{min-height:30px;padding:0 10px;border-radius:999px;background:var(--rose-soft);color:#9F1239;display:inline-flex;align-items:center;font-size:11px;font-weight:900}
+.empty{border-radius:26px;background:rgba(255,255,255,.9);border:1px dashed rgba(192,38,211,.28);padding:24px;text-align:center;color:var(--muted);line-height:1.45}.empty strong{display:block;color:var(--text);font-size:18px;margin-bottom:7px;letter-spacing:-.035em}
+.card{border-radius:28px;background:rgba(255,255,255,.94);border:1px solid var(--border);box-shadow:var(--soft);padding:18px}.form{display:grid;gap:14px}.note{padding:12px 14px;border-radius:18px;background:var(--primary-soft);color:var(--primary-dark);font-size:12px;line-height:1.45;font-weight:750;border:1px solid rgba(192,38,211,.12)}
+.client-hero{border-radius:32px;padding:20px;background:radial-gradient(circle at top right,rgba(255,255,255,.22),transparent 34%),linear-gradient(135deg,var(--primary-dark),var(--primary),var(--rose));color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.client-hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-76px;bottom:-72px;border:32px solid rgba(255,255,255,.13)}.client-hero>*{position:relative;z-index:1}.client-hero h2{font-size:30px;letter-spacing:-.065em;line-height:1;margin-top:14px}.client-hero p{color:rgba(255,255,255,.75);margin-top:8px;font-size:13px;line-height:1.4}
+.metrics{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border-radius:19px;padding:13px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.17);backdrop-filter:blur(12px)}.metric small{color:rgba(255,255,255,.68);font-size:11px;font-weight:900}.metric strong{display:block;margin-top:5px;font-size:20px;letter-spacing:-.04em}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:rgba(255,255,255,.74);border:1px solid var(--border);border-radius:22px;padding:6px;margin:14px 0;box-shadow:var(--soft);position:sticky;top:8px;z-index:5;backdrop-filter:blur(18px)}.tab{min-height:48px;border-radius:17px;background:transparent;color:var(--muted);font-weight:950;font-size:14px}.tab.active{background:linear-gradient(135deg,var(--primary),var(--rose));color:#fff;box-shadow:0 12px 22px rgba(192,38,211,.22)}.tab-panel{display:none}.tab-panel.active{display:block;animation:enter .22s ease}
+.file-zone{border-radius:24px;background:#fff;border:1.5px dashed rgba(192,38,211,.30);padding:18px;text-align:center;display:grid;gap:12px}.file-zone .big{width:58px;height:58px;display:grid;place-items:center;margin:0 auto;border-radius:22px;background:var(--primary-soft);color:var(--primary);font-size:26px}.file-zone strong{display:block;font-size:16px;letter-spacing:-.03em}.file-zone p{color:var(--muted);font-size:13px;line-height:1.42}.hidden{display:none}
+.pdf-card{margin-top:12px;border-radius:22px;padding:14px;background:#FFF1F7;border:1px solid var(--border);display:none;gap:12px;align-items:center}.pdf-card.show{display:flex}.pdf-icon{width:46px;height:46px;border-radius:17px;background:var(--rose-soft);color:#BE123C;display:grid;place-items:center;font-size:16px;font-weight:950;flex:0 0 auto}.pdf-card strong{display:block;font-size:14px;letter-spacing:-.02em;word-break:break-word}.pdf-card span{color:var(--muted);display:block;margin-top:3px;font-size:12px}
+.timeline{display:grid;gap:12px}.timeline-item{border-radius:22px;padding:14px;background:#fff;border:1px solid var(--border);box-shadow:var(--soft);display:flex;gap:12px}.dot{width:42px;height:42px;border-radius:16px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;font-size:18px;flex:0 0 auto}.timeline-item strong{display:block;font-size:14px;letter-spacing:-.02em}.timeline-item span{display:block;color:var(--muted);font-size:12px;line-height:1.4;margin-top:4px}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px}.photo{min-height:178px;border-radius:24px;background:radial-gradient(circle at top right,rgba(192,38,211,.11),transparent 34%),#fff;border:1.5px dashed rgba(192,38,211,.24);position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;padding:12px;color:var(--muted)}.photo input{display:none}.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}.photo.has-img img{display:block}.label{position:absolute;left:10px;top:10px;min-height:28px;padding:0 10px;border-radius:999px;background:rgba(35,19,34,.72);color:#fff;display:inline-flex;align-items:center;font-size:11px;font-weight:950;z-index:2}.placeholder{display:grid;gap:8px;place-items:center;font-size:12px;line-height:1.32;font-weight:760}.placeholder span{width:44px;height:44px;display:grid;place-items:center;border-radius:16px;background:var(--primary-soft);color:var(--primary);font-size:20px}
+.result{border-radius:28px;background:rgba(255,255,255,.94);border:1px solid var(--border);box-shadow:var(--soft);overflow:hidden}.compare{display:grid;grid-template-columns:1fr 1fr}.img{height:188px;position:relative;background:#F8E9F4;overflow:hidden}.img img{width:100%;height:100%;object-fit:cover;display:block}.img.empty-img{display:grid;place-items:center;color:var(--muted);font-weight:850;font-size:13px}.body{padding:15px}.body header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}.body strong{font-size:16px;letter-spacing:-.03em}.body p{color:var(--muted);font-size:13px;line-height:1.43;margin-top:6px;white-space:pre-wrap}.session{min-height:30px;border-radius:999px;padding:0 11px;background:var(--green-soft);color:#047857;font-size:11px;font-weight:950;display:inline-flex;align-items:center;white-space:nowrap}
+.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;width:min(434px,calc(100% - 24px));min-height:74px;background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:28px;box-shadow:0 18px 48px rgba(134,25,143,.20);display:grid;grid-template-columns:repeat(4,1fr);padding:8px;z-index:30}.nav{background:transparent;border-radius:21px;color:var(--muted);font-size:11px;font-weight:900;display:grid;place-items:center;align-content:center;gap:3px}.nav span{font-size:20px;line-height:1}.nav.active{color:#fff;background:linear-gradient(135deg,var(--primary),var(--rose));box-shadow:0 14px 24px rgba(192,38,211,.24)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:98px;width:min(434px,calc(100% - 28px));min-height:52px;display:none;align-items:center;padding:13px 15px;border-radius:18px;background:#231322;color:#fff;box-shadow:var(--shadow);z-index:50;font-size:13px;line-height:1.4;font-weight:800}.toast.show{display:flex;animation:enter .18s ease}
+.sheet{position:fixed;inset:0;background:rgba(35,19,34,.34);z-index:70;display:none;align-items:end;padding:12px}.sheet.show{display:flex}.sheet-content{width:min(470px,100%);margin:0 auto;max-height:82vh;overflow:auto;border-radius:30px;background:#fff;border:1px solid var(--border);box-shadow:0 30px 80px rgba(35,19,34,.26);padding:18px;animation:enter .22s ease}.sheet-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.sheet-head h3{font-size:22px;letter-spacing:-.05em}.sheet-head p{color:var(--muted);margin-top:4px;font-size:13px;line-height:1.35}
+@media(min-width:520px){body{padding:20px 0}.app{min-height:calc(100vh - 40px);border-radius:36px;overflow:hidden}.bottom{bottom:26px}.toast{bottom:116px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="screen active" id="home">
+    <div class="topbar">
+      <div class="brand"><div class="logo">GC</div><div><strong>GlowCare</strong><span>Ficha & evolução estética</span></div></div>
+      <button class="icon-btn" data-toast>🔔</button>
+    </div>
+    <div class="hero">
+      <span class="badge">✨ Prontuário visual mobile</span>
+      <h1>Organize clientes, fichas e resultados em um só lugar.</h1>
+      <p>Um protótipo feito para esteticistas acompanharem cada paciente com ficha em PDF e fotos de antes/depois.</p>
+      <div class="actions">
+        <button class="btn btn-primary" data-nav="clients">Ver clientes</button>
+        <button class="btn btn-secondary" data-open="clientSheet">Cadastrar cliente</button>
+      </div>
+    </div>
+    <div class="panel"><small>Diferencial do protótipo</small><strong>Linha de evolução com antes/depois, sessões realizadas e observações salvas por cliente.</strong></div>
+    <div class="stats">
+      <article class="stat"><div class="ico">👩</div><div><small>Clientes</small><strong id="statClients">0</strong></div></article>
+      <article class="stat"><div class="ico">📸</div><div><small>Resultados</small><strong id="statResults">0</strong></div></article>
+    </div>
+    <div class="section"><div><h2>Hoje</h2><p>Ações rápidas para o atendimento.</p></div></div>
+    <div class="grid">
+      <button class="timeline-item" data-open="clientSheet"><div class="dot">＋</div><div><strong>Novo cliente</strong><span>Cadastre dados completos, mas mostre só o nome na lista.</span></div></button>
+      <button class="timeline-item" data-nav="clients"><div class="dot">📂</div><div><strong>Abrir prontuário</strong><span>Acesse ficha em PDF e resultados de antes/depois.</span></div></button>
+    </div>
+  </section>
+
+  <section class="screen" id="clients">
+    <div class="topbar">
+      <div class="brand"><div class="logo">GC</div><div><strong>Clientes</strong><span>Lista privada e objetiva</span></div></div>
+      <button class="icon-btn" data-open="clientSheet">＋</button>
+    </div>
+    <div class="section"><div><h2>Pacientes</h2><p>Na lista aparece apenas o nome. CPF e dados internos ficam protegidos.</p></div></div>
+    <div class="search"><span>🔎</span><input id="searchClient" placeholder="Buscar cliente pelo nome..." /></div>
+    <div class="list" id="clientList"></div>
+  </section>
+
+  <section class="screen" id="detail">
+    <div class="topbar">
+      <button class="icon-btn" data-nav="clients">←</button>
+      <div class="brand" style="flex:1"><div><strong id="topName">Cliente</strong><span>Prontuário individual</span></div></div>
+      <button class="icon-btn" id="editClient">✎</button>
+    </div>
+    <article class="client-hero">
+      <span class="badge" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.18)">🌸 Acompanhamento estético</span>
+      <h2 id="clientName">Nome</h2>
+      <p>Ficha, documentos e resultados ficam vinculados a este paciente.</p>
+      <div class="metrics">
+        <div class="metric"><small>Resultados</small><strong id="countResults">0</strong></div>
+        <div class="metric"><small>Sessões registradas</small><strong id="countSessions">0</strong></div>
+      </div>
+    </article>
+    <div class="tabs">
+      <button class="tab active" data-tab="tabFicha">Ficha</button>
+      <button class="tab" data-tab="tabResultados">Resultados</button>
+    </div>
+
+    <div class="tab-panel active" id="tabFicha">
+      <div class="card">
+        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Ficha em PDF</h2><p>Anexe a ficha/anamnese da cliente em PDF.</p></div></div>
+        <label class="file-zone" for="pdfInput">
+          <div class="big">📄</div><div><strong>Anexar documento PDF</strong><p>Toque aqui para selecionar a ficha da paciente.</p></div>
+        </label>
+        <input class="hidden" id="pdfInput" type="file" accept="application/pdf" />
+        <div class="pdf-card" id="pdfCard"><div class="pdf-icon">PDF</div><div style="flex:1;min-width:0"><strong id="pdfName">ficha.pdf</strong><span>Documento salvo nesta cliente</span></div><button class="btn btn-small btn-secondary" id="openPdf">Abrir</button></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Resumo privado</h2><p>Dados cadastrados para controle interno.</p></div></div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot">🪪</div><div><strong>CPF</strong><span id="cpfText">Não informado</span></div></div>
+          <div class="timeline-item"><div class="dot">💬</div><div><strong>WhatsApp</strong><span id="whatsText">Não informado</span></div></div>
+          <div class="timeline-item"><div class="dot">📝</div><div><strong>Observações internas</strong><span id="notesText">Nenhuma observação.</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tabResultados">
+      <div class="card">
+        <div class="section" style="margin-top:0"><div><h2 style="font-size:23px">Novo resultado</h2><p>Adicione antes, depois, sessões e observações.</p></div></div>
+        <div class="form">
+          <div class="before-after">
+            <label class="photo" id="beforeBox"><span class="label">Antes</span><img id="beforePreview" alt=""><input id="beforeInput" type="file" accept="image/*"><div class="placeholder"><span>📷</span>Foto antes da sessão</div></label>
+            <label class="photo" id="afterBox"><span class="label">Depois</span><img id="afterPreview" alt=""><input id="afterInput" type="file" accept="image/*"><div class="placeholder"><span>✨</span>Foto depois da sessão</div></label>
+          </div>
+          <div><label>Quantidade de sessões referente a essas fotos</label><input id="sessionsInput" type="number" min="1" placeholder="Ex: 3"></div>
+          <div><label>Observações do resultado</label><textarea id="resultNotes" placeholder="Ex: Cliente realizou limpeza de pele, apresentou melhora na textura..."></textarea></div>
+          <button class="btn btn-primary" id="saveResult">Salvar resultado</button>
+        </div>
+      </div>
+      <div class="section"><div><h2 style="font-size:23px">Evolução</h2><p>Histórico de resultados desta cliente.</p></div></div>
+      <div class="results" id="resultList"></div>
+    </div>
+  </section>
+
+  <nav class="bottom">
+    <button class="nav active" data-nav="home"><span>🏠</span>Início</button>
+    <button class="nav" data-nav="clients"><span>👩</span>Clientes</button>
+    <button class="nav" data-open="clientSheet"><span>＋</span>Novo</button>
+    <button class="nav" data-toast><span>⚙️</span>Mais</button>
+  </nav>
+</div>
+
+<div class="toast" id="toast">Ação simulada no protótipo.</div>
+
+<div class="sheet" id="clientSheet">
+  <div class="sheet-content">
+    <div class="sheet-head"><div><h3 id="sheetTitle">Cadastrar cliente</h3><p>Dados completos salvos; na lista principal aparece somente o nome.</p></div><button class="icon-btn" data-close="clientSheet">×</button></div>
+    <div class="card">
+      <div class="form">
+        <div><label>Nome completo</label><input id="nameInput" placeholder="Ex: Ana Paula Souza"></div>
+        <div><label>CPF</label><input id="cpfInput" placeholder="000.000.000-00"></div>
+        <div><label>WhatsApp</label><input id="whatsInput" placeholder="(00) 00000-0000"></div>
+        <div><label>Procedimento principal</label><select id="procedureInput"><option>Limpeza de pele</option><option>Drenagem linfática</option><option>Massagem modeladora</option><option>Peeling</option><option>Design de sobrancelhas</option><option>Outro</option></select></div>
+        <div><label>Observações internas</label><textarea id="clientNotes" placeholder="Alergias, preferências, cuidados, restrições..."></textarea></div>
+        <div class="note">🔒 Privacidade visual: na lista aparece apenas o nome da cliente.</div>
+        <button class="btn btn-primary" id="saveClient">Salvar cliente</button>
+        <button class="btn btn-secondary" data-close="clientSheet">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const key="glowcare-prototype-v1";
+const demo={clients:[{id:"c1",name:"Mariana Oliveira",cpf:"123.456.789-00",whatsapp:"(16) 99999-1200",procedure:"Limpeza de pele",notes:"Pele sensível. Evitar produtos muito abrasivos.",pdf:null,results:[]},{id:"c2",name:"Camila Santos",cpf:"987.654.321-00",whatsapp:"(16) 98888-4500",procedure:"Drenagem linfática",notes:"Cliente prefere atendimento no período da manhã.",pdf:null,results:[]}]};
+let data=load(),selected=data.clients[0]?.id||null,editing=null,before=null,after=null;
+function load(){try{let r=localStorage.getItem(key);if(!r){localStorage.setItem(key,JSON.stringify(demo));return JSON.parse(JSON.stringify(demo))}return JSON.parse(r)}catch{return JSON.parse(JSON.stringify(demo))}}
+function persist(){localStorage.setItem(key,JSON.stringify(data));stats()}
+function $(id){return document.getElementById(id)}
+function esc(v){return String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function toast(m="Ação simulada no protótipo."){let t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)}
+function nav(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.nav===id));scrollTo({top:0,behavior:"smooth"});if(id==="clients")renderClients();if(id==="detail")renderDetail()}
+function openSheet(){if(!editing)clearForm();$("clientSheet").classList.add("show")}function closeSheet(){$("clientSheet").classList.remove("show");editing=null;$("sheetTitle").textContent="Cadastrar cliente"}
+function initials(n){return n.split(" ").filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join("")||"CL"}
+function current(){return data.clients.find(c=>c.id===selected)}
+function stats(){$("statClients").textContent=data.clients.length;$("statResults").textContent=data.clients.reduce((s,c)=>s+(c.results?.length||0),0)}
+function renderClients(){let q=$("searchClient").value.trim().toLowerCase();let list=data.clients.filter(c=>c.name.toLowerCase().includes(q));$("clientList").innerHTML=list.length?list.map(c=>`<button class="client" data-client="${c.id}"><div class="avatar">${initials(c.name)}</div><div class="client-main"><strong>${esc(c.name)}</strong><span>${esc(c.procedure||"Procedimento não informado")}</span></div><div class="pill">${c.results?.length||0} resultado${(c.results?.length||0)===1?"":"s"}</div></button>`).join(""):`<div class="empty"><strong>Nenhum cliente encontrado</strong>Cadastre uma cliente ou ajuste a busca.</div>`;document.querySelectorAll("[data-client]").forEach(b=>b.onclick=()=>{selected=b.dataset.client;nav("detail")})}
+function renderDetail(){let c=current();if(!c){nav("clients");return}$("topName").textContent=c.name;$("clientName").textContent=c.name;$("cpfText").textContent=c.cpf||"Não informado";$("whatsText").textContent=c.whatsapp||"Não informado";$("notesText").textContent=c.notes||"Nenhuma observação.";let res=c.results||[];$("countResults").textContent=res.length;$("countSessions").textContent=res.reduce((s,r)=>s+Number(r.sessions||0),0);if(c.pdf?.dataUrl){$("pdfName").textContent=c.pdf.name||"ficha.pdf";$("pdfCard").classList.add("show")}else $("pdfCard").classList.remove("show");renderResults(c)}
+function renderResults(c){let r=c.results||[];$("resultList").innerHTML=r.length?r.map(item=>`<article class="result"><div class="compare">${item.before?`<div class="img"><span class="label">Antes</span><img src="${item.before}"></div>`:`<div class="img empty-img">Sem antes</div>`}${item.after?`<div class="img"><span class="label">Depois</span><img src="${item.after}"></div>`:`<div class="img empty-img">Sem depois</div>`}</div><div class="body"><header><div><strong>Resultado registrado</strong><p>${esc(item.date)}</p></div><span class="session">${Number(item.sessions||0)} sessão${Number(item.sessions||0)===1?"":"es"}</span></header><p>${esc(item.notes||"Sem observações.")}</p></div></article>`).join(""):`<div class="empty"><strong>Nenhum resultado salvo</strong>Adicione fotos de antes e depois para montar a evolução.</div>`}
+function clearForm(){$("nameInput").value="";$("cpfInput").value="";$("whatsInput").value="";$("procedureInput").value="Limpeza de pele";$("clientNotes").value=""}
+function fill(c){$("nameInput").value=c.name||"";$("cpfInput").value=c.cpf||"";$("whatsInput").value=c.whatsapp||"";$("procedureInput").value=c.procedure||"Limpeza de pele";$("clientNotes").value=c.notes||""}
+function saveClient(){let name=$("nameInput").value.trim();if(!name){toast("Digite o nome completo da cliente.");return}if(editing){let c=data.clients.find(x=>x.id===editing);if(c){c.name=name;c.cpf=$("cpfInput").value.trim();c.whatsapp=$("whatsInput").value.trim();c.procedure=$("procedureInput").value;c.notes=$("clientNotes").value.trim()}toast("Cliente atualizado com sucesso.")}else{let c={id:"c"+Date.now(),name,cpf:$("cpfInput").value.trim(),whatsapp:$("whatsInput").value.trim(),procedure:$("procedureInput").value,notes:$("clientNotes").value.trim(),pdf:null,results:[]};data.clients.unshift(c);selected=c.id;toast("Cliente cadastrado com sucesso.")}persist();closeSheet();renderClients();renderDetail();nav(editing?"detail":"clients");editing=null}
+function dataUrl(file){return new Promise((res,rej)=>{let fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(file)})}
+async function pdfUpload(e){let file=e.target.files?.[0];if(!file)return;if(file.type!=="application/pdf"){toast("Selecione um arquivo PDF.");return}let c=current();if(!c)return;try{c.pdf={name:file.name,dataUrl:await dataUrl(file)};persist();renderDetail();toast("Ficha em PDF salva nesta cliente.")}catch{toast("Não foi possível salvar o PDF.")}}
+async function photo(e,type){let file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith("image/")){toast("Selecione uma imagem.");return}let url=await dataUrl(file);if(type==="before"){before=url;$("beforePreview").src=url;$("beforeBox").classList.add("has-img")}else{after=url;$("afterPreview").src=url;$("afterBox").classList.add("has-img")}}
+function resetResult(){before=null;after=null;$("beforePreview").removeAttribute("src");$("afterPreview").removeAttribute("src");$("beforeBox").classList.remove("has-img");$("afterBox").classList.remove("has-img");$("beforeInput").value="";$("afterInput").value="";$("sessionsInput").value="";$("resultNotes").value=""}
+function saveResult(){let c=current();if(!c)return;let sessions=Number($("sessionsInput").value);if(!before&&!after){toast("Adicione pelo menos uma foto de antes ou depois.");return}if(!sessions||sessions<1){toast("Informe quantas sessões foram feitas.");return}c.results=c.results||[];c.results.unshift({id:"r"+Date.now(),before,after,sessions,notes:$("resultNotes").value.trim(),date:new Date().toLocaleDateString("pt-BR")});persist();resetResult();renderDetail();toast("Resultado salvo na ficha da cliente.")}
+function openPdf(){let c=current();if(!c?.pdf?.dataUrl){toast("Nenhum PDF anexado.");return}let w=window.open();w.document.write(`<iframe src="${c.pdf.dataUrl}" style="width:100%;height:100vh;border:0"></iframe>`)}
+document.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>nav(b.dataset.nav));document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openSheet());document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeSheet());document.querySelectorAll("[data-toast]").forEach(b=>b.onclick=()=>toast());
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab-panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")});
+$("clientSheet").onclick=e=>{if(e.target===$("clientSheet"))closeSheet()};$("saveClient").onclick=saveClient;$("searchClient").oninput=renderClients;$("pdfInput").onchange=pdfUpload;$("openPdf").onclick=openPdf;$("beforeInput").onchange=e=>photo(e,"before");$("afterInput").onchange=e=>photo(e,"after");$("saveResult").onclick=saveResult;$("editClient").onclick=()=>{let c=current();if(!c)return;editing=c.id;$("sheetTitle").textContent="Editar cliente";fill(c);openSheet()};
+stats();renderClients();renderDetail();
+</script>
+</body>
+</html>
